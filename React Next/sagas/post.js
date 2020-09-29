@@ -63,9 +63,11 @@ function* loadUserPost(action) {
 }
 
 function loadHashtagPostAPI(data, lastId) {
-  return axios.get(`/hashtag/${data}?lastId=${lastId || 0}`);
+  // 한글 특수문자 쿼리 전송시 encodedURIComponent 사용 필요
+  return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
 }
 function* loadHashtagPost(action) {
+  console.log('logHashTag conolse');
   try {
     const result = yield call(loadHashtagPostAPI, action.data, action.lastId);
     yield put({
@@ -73,6 +75,7 @@ function* loadHashtagPost(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error('에러!', err);
     yield put({
       type: LOAD_HASHTAG_POST_FAILURE,
       error: err.response.data,

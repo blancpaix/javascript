@@ -15,7 +15,7 @@ router.get('/:hashtag', async (req, res, next) => { // GET /hashtag/alpha
       order: [['createdAt', 'DESC']],
       include: [{ // 해시태그는 테이블이 따로 있음
         model: Hashtag,
-        where: { name: req.params.hashtag },    // include 한 애 에서 조건을 적용 할 수 잇음 위 아래 조건 다 만족
+        where: { name: decodeURIComponent(req.params.hashtag) },    // include 한 애 에서 조건을 적용 할 수 잇음 위 아래 조건 다 만족
       }, {
         model: User,
         attributes: ['id', 'nickname'],

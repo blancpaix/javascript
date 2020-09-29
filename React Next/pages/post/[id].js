@@ -21,6 +21,10 @@ const Post = () => {
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
 
+  if (router.isFallback) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <AppLayout>
       <Head>
@@ -42,8 +46,26 @@ const Post = () => {
 // 좋아요를 눌럿을 수도 잇고 댓글이 실시간으로 변경될 수 있고
 export default Post;
 
+// getStatic Props 사용시 필수  근데 사용이 까다롭고 제한적이라서 비추...
+// export async function getStaticPaths() {
+//   // const result = await axios.get('/post/list'); // 근데 이거는 좀 필요없어 보이고... 적당히
+//   // path 의 갯수가 제한이 되는 블로그 등등에서만 사용하는것을 추천!
+//   // html으로 만들어두면 좋을만한 페이지만 아니면 부분... 레이이아웃 같은것들만 html 화 시켜놓고 나머지 부분은 SSR 사용
+//   return {
+//     paths: [
+//       { params: { id: '10' } },
+//       { params: { id: '12' } },
+//       { params: { id: '13' } },
+//     ],
+//     fallback: true, // 123만 렌더링 됨 나머지는 오류, 활성화 시 오류 안뜸
+//     // 활성화 하면 서버사이드 렌더링이 안됨 그래서 위에서 클라이언트 사이드 렌더링 하도록 잠깐 기다리도록 설정
+//     // fallback 에 해당하는 부분만 밑에 ssr 에서 불러오는듯? 위에서 데이터 없으면 밑에 코드 실행함
+//   };
+// }
+
 // SSR 프롭스는 context.query Id 나 context.params id 로 접근
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  // export const getStaticProps = wrapper.getStaticProps(async (context) => {
   console.log('getServerSideProps start---');
   console.log('context review : ', context.req);
   const cookie = context.req ? context.req.headers.cookie : '';

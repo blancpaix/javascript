@@ -5,11 +5,17 @@ import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, Ellipsis
 
 import PropTypes from 'prop-types';
 
+import Link from 'next/link';
+// 넥스트 링크임... 근데 링크타고 들어가면 서버사이드 프롭을 못불러 오는건가?? 왜 안됨?
+import moment from 'moment';
+
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import FollowButton from './FollowButton';
 import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
+
+moment.locale('ko'); // 한글로 바꿔줌.
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -100,20 +106,34 @@ const PostCard = ({ post }) => {
       >
         {post.RetweetId && post.Retweet
           ? (
-            <Card cover={post.Retweet.Images[0] ? <PostImages images={post.Retweet.Images} /> : null}>
+            <Card cover={post.Retweet.Images[0]
+              ? <PostImages images={post.Retweet.Images} /> : null}
+            >
+              <div style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
               <Card.Meta
                 description={<PostCardContent postData={post.Retweet.content} />}
                 title={post.Retweet.User.nickname}
-                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                avatar={(
+                  <Link href={`/user/${post.Retweet.User.id}`}>
+                    <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
               />
             </Card>
           )
           : (
-            <Card.Meta
-              description={<PostCardContent postData={post.content} />}
-              title={post.User.nickname}
-              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-            />
+            <>
+              <div style={{ float: 'right' }}>{moment(post.createdAt).fromNow()}</div>
+              <Card.Meta
+                description={<PostCardContent postData={post.content} />}
+                title={post.User.nickname}
+                avatar={(
+                  <Link href={`/user/${post.User.id}`}>
+                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
+              />
+            </>
           )}
 
       </Card>
@@ -129,7 +149,11 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={(
+                    <Link href={`/user/${item.User.id}`}>
+                      <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                    </Link>
+                  )}
                   content={item.content}
                 />
               </li>
@@ -154,6 +178,7 @@ PostCard.propTypes = {
     Images: PropTypes.arrayOf(PropTypes.object),
     Likers: PropTypes.arrayOf(PropTypes.object),
     Retweet: PropTypes.objectOf(PropTypes.any),
+    RetweetId: PropTypes.objectOf(PropTypes.any),
   }).isRequired,
 };
 
