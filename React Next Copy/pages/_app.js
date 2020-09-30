@@ -5,7 +5,9 @@ import 'antd/dist/antd.css';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
-const Wrapper = ({ Component }) => {
+import wrapper from '../store/configureStore';
+
+const App = ({ Component }) => {
 
   return (
     <>
@@ -18,8 +20,8 @@ const Wrapper = ({ Component }) => {
   )
 };
 
-Wrapper.propTypes = {
+App.propTypes = {
   Component: PropTypes.elementType.isRequired,    // Component 가 필요!
 }
 
-export default Wrapper;
+export default wrapper.withRedux(App);

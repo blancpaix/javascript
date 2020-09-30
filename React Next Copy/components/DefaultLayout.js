@@ -22,9 +22,6 @@ const DefaultLayout = ({ children }) => {
         <Menu.Item>
           <AntdInputSearch enterButton style={{ verticalAlign: 'middle' }} />
         </Menu.Item>
-        <Menu.Item>
-          <Link href="/signup"><a>회원가입</a></Link>
-        </Menu.Item>
       </Menu>
       <br />
 
@@ -36,7 +33,7 @@ const DefaultLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <a href="https://www.google.com" target="_blank" rel="noreferrer noopener">Made By Blancpaix</a>
+          <a href="https://www.google.com" target="_blank" rel="noreferrer noopener">GET OUT GUY!</a>
         </Col>
       </Row>
     </div>
