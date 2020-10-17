@@ -20,7 +20,7 @@ export const initialState = { // 분리를 해서 나중에 또 합쳐줘야 하
   signupLoading: false, // 회원가입 시도
   signupDone: false,
   signupError: null,
-  changeDisplayNameLoading: false, // 회원가입 시도
+  changeDisplayNameLoading: false, // 닉변 시도
   changeDisplayNameDone: false,
   changeDisplayNameError: null,
   loadFollowersLoading: false, // 팔로워 가져오기
@@ -46,18 +46,9 @@ export const initialState = { // 분리를 해서 나중에 또 합쳐줘야 하
 };
 
 // type 은 오타가 잦기 떄문에 변수로 빼주는게 좋음, 다른 파일에서도 쓸 수 있게 export 해줌
-export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
-export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
-export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
-
-export const LOAD_USER_INFO_REQUEST = 'LOAD_USER_INFO_REQUEST';
-export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
-export const LOAD_USER_INFO_FAILURE = 'LOAD_USER_INFO_FAILURE';
-
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
@@ -66,9 +57,18 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
 export const CHANGE_DISPLAYNAME_REQUEST = 'CHANGE_DISPLAYNAME_REQUEST';
 export const CHANGE_DISPLAYNAME_SUCCESS = 'CHANGE_DISPLAYNAME_SUCCESS';
 export const CHANGE_DISPLAYNAME_FAILURE = 'CHANGE_DISPLAYNAME_FAILURE';
+
+
+export const LOAD_USER_INFO_REQUEST = 'LOAD_USER_INFO_REQUEST';
+export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
+export const LOAD_USER_INFO_FAILURE = 'LOAD_USER_INFO_FAILURE';
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
@@ -148,6 +148,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loginDone = false;
       draft.loginError = action.error;
       break;
+      
     case LOGOUT_REQUEST:
       draft.logoutLoading = true;
       draft.logoutDone = false;
@@ -285,6 +286,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
 // 자기 서버에서 셀프 ddos 공격을 하는게 최악의 프론트엔드임 실력없는 사람들....
 // 리덕스 하다가 그런 사람이 있음 그래서 이거 막으려면 스로틀 적용해서 1초에 몇번이상 요청이 날라오면 그거 차단해버림. debounce?? 등등
 // saga 가 그런거 구현해놓음 성크는 간단한것만 구현할때 사용하기를 추천함
+
 
 export const del_loginAction = (data) => (dispatch, getState) => {
   const state = getState();

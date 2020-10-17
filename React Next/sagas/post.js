@@ -292,16 +292,21 @@ function* watchRetweet() {
 
 export default function* postSaga() {
   yield all([
+    fork(watchLoadPost),
+    fork(watchAddPost),
+    
+    fork(watchUploadImages),
+    fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),
-    fork(watchLoadPost),
+    fork(watchAddComment),
+    
+    fork(watchRetweet),
     fork(watchLoadUserPost),
     fork(watchLoadHashtagPost),
     fork(watchLoadSinglePost),
-    fork(watchAddPost),
-    fork(watchRemovePost),
-    fork(watchAddComment),
-    fork(watchUploadImages),
-    fork(watchRetweet),
+    
+    
+    
   ]);
 }

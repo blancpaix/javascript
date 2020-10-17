@@ -1,0 +1,117 @@
+passport  middleware
+
+app.post('/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));
+
+npm i passport
+authenticate-> calling passport.authenticate() - Stadard connect middleware
+
+app.login('/login', 
+  passport.authenticate('local'), (req, res) => {
+    res.redirect('/users/' + req.user.username);
+  });
+
+redirect options override the default behavior
+options : 
+  failureFlash: true  => display status inform to the user Error Message
+  > passport.authenticate('local', { failureFlash: 'Invalid username or password.' });
+  > passport.authenticate('local, { successFlash: 'Welcome!' });
+  Flash messages removed from Express 3.X -> connect-flash recommended
+  Disable Sessions
+  > .authenticate('basic, { session : false }),
+  default res = 401 Unathorized;
+
+Custom Callback
+  app.get('/login', (req, res ,next) => {
+    // if authenticate failed, user will be set to false
+    // if an exception occurred, err will be set
+    // info argument will be passed, containing additional deatils provided by the strategy's verify callback
+    passport.authenticate('local', (err, user ,info) => {
+      if (err) reutrn next(err);
+      if (!user) return res.redirect('/login');
+      req.login(user, (err) => {
+        if (err) return next(err);
+        return res.redirect('/users/'+ user.username);
+        })
+      })(req, res, next);
+    })
+  })
+
+
+Three pieces need to be configured to use Passport for authentication
+1. Authentication
+ strategy
+2. Application middleware
+3. Sessions (optional)
+
+... strategy must be configured via the use() method.
+Ex) LocalStrategy for username / password authentication
+const passport = require('passport')
+const LocalStrategy = require('passport-local).Strategy;
+
+passport.ues(new LocalStrategy((username, password, done) => {
+  User.findOne({ username: username }, (err, user) => {
+    if (err) return done(err);
+    if (!user) return done(null, false, { message: 'Incorrect username.' });
+    if (!user.validPassword(password) return done(null, false, { message: 'Incorrect Password.' }));
+    return done(null, user);
+  })
+})
+
+When Passport authenticates a request, it parses the credentials contained in the request.
+it then invokes the verify callback with those credentials as arguments.
+if the credentials are valid, the verify callback invokes (done) to supply Passport with the user that authenticted.
+  return done(null, user);
+if credentials are not valid - pw is incorrent, done should be invoked with false
+  reutrn done(null, false);
+additional message
+  return done(null, false, { message: 'inConnrect PW.' });
+if exception occuredd, done should be invoked with an Error
+  return done(err);
+
+[Middleware]
+passport.initialize() is required to initialize Passport
+  app.use(passport.initialize());
+  app.use(passport.session());
+Be sure to use session() before passport.session() to ensure that the login session is resotred in the correct order
+
+[Session]
+The credentials used to authenticate a user will only be transmitted during the login request.
+if authentication succedds, a session will be established and maintained via a cookie set in the user's browser.
+Passport will serialize and deserialize user instances to and from the session
+  passport.serializeUser((user, done) => {
+    done(null, user.id)
+  });
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+      done(err, user);
+    })
+    // only the user Id is serialized to the session.
+    // Plz, keeping the amout of data sotred within the sesion small.
+  })
+
+
+[Username & Password] - the most widely used way for web to authenticate users
+use passport-local
+  config)
+  const passport= require('passport');
+  const LocalStrategy = require('passport-local').Strategy;
+
+  
+  passport.use(new LocalStrategy({
+    // arg must be matching on the website's name tag or insert options in here
+    usernameField : 'email',
+    passwordField: 'passwd'
+  (username, password, done) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) return done(err);
+      if (!user) return done(null, false, { message: 'Incorrect username' });
+      if (!user.validPassword(password) return done(null, false, { message: 'Incorrect password' }));
+      return done(null, user);
+    })
+  }))
+[IN ROUTE]
+  app.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect : '/login',
+    failureFlash: true
+  }));

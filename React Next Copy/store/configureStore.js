@@ -6,12 +6,12 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers';
 import saga from '../sagas';
 
-const loggerMiddleware = ({dispatch, getState}) => next => aciton => {
-  console.log('[Loggin on Middleware]\n', aciton);
+const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
+  console.log('[Loggin on Middleware]\n', action);
   next(action);
 };
 
-const configureStore  = () => {
+const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
   const enhancer = process.env.NODE_ENV === 'production'
@@ -22,10 +22,10 @@ const configureStore  = () => {
   store.sagaTask = sagaMiddleware.run(saga);
 
   return store;
-}
+};
 
 const wrapper = createWrapper(configureStore, {
-  debug: process.env.NODE_ENV === 'development'
+  debug: process.env.NODE_ENV === 'development',
 });
 
 export default wrapper;

@@ -4,10 +4,10 @@ const passport = require('passport');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { User, Post } = require('../models');
-const user = require('../models/user');
-// const db = requir('../models');
 const router = express.Router();
 
+// SSR 처리시 로그인 데이터 반환
+// 유저 정보인데 한번 더 데이터 정제 필요, user 존재 여부 확인
 router.get('/', async (req, res, next) => {   // GET /user
   console.log('header: ', req.headers); // 헤더에 쿠키가 없는거 확인
   // 쿠키가 없어서 현재 로그인 한 상태인지 확인이 불가능함
@@ -42,7 +42,7 @@ router.get('/', async (req, res, next) => {   // GET /user
 });
 
 
-
+// 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => {    // 비동기 함수인지는 문서참고해야 함
   console.log('req body 확인', req.body);
   try {
@@ -72,6 +72,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {    // 비동기 함�
 
 // express 기법중 하나. 미들웨어 확장, 이 패턴 사용하세요~
 // passport 사용해서 로그인 passport 에서 req, res 사용하려면 이렇게
+// 로그인
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, msg) => {
     if (err) {
@@ -110,12 +111,14 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   })(req, res, next);
 });
 
+// 로그아웃
 router.post('/logout', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   res.send('ok');
 });
 
+// 닉네임 변경
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   try {
     console.log('req.body', req.body)
@@ -123,7 +126,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
       nickname: req.body.nickname,
     }, {
       where: { id: req.user.id },
-    });
+    }); 
     res.status(200).json({ nickname: req.body.nickname })
   } catch (err) {
     console.error(err);
@@ -131,6 +134,8 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   }
 });
 
+
+// 팔로워 페치
 router.get('/followers', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
@@ -147,6 +152,7 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로윙 페치
 router.get('/followings', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
@@ -163,6 +169,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// 팔로워 삭제
 router.delete('/follower/:userId/', isLoggedIn, async (req, res, next) => { // PATCH /user/follower/2
   try {
     const user = await User.findOne({ where: { id: req.params.userId } });
@@ -177,6 +184,7 @@ router.delete('/follower/:userId/', isLoggedIn, async (req, res, next) => { // P
   }
 });
 
+// 유저 포스트 가져오기
 router.get('/:userId/posts', async (req, res, next) => { // GET /user/1/posts
   try {
     let where = { UserId: req.params.userId };
@@ -221,7 +229,7 @@ router.get('/:userId/posts', async (req, res, next) => { // GET /user/1/posts
   }
 });
 
-
+// 팔로우
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { // PATCH /user/1/follow
   try {
     const user = await User.findOne({ where: { id: req.params.userId } });
@@ -236,6 +244,7 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => { // PATCH
     next(err);
   }
 });
+// 언팔로우
 router.delete('/:userId/unfollow', isLoggedIn, async (req, res, next) => { // PATCH /user/1/follow
   try {
     const user = await User.findOne({ where: { id: req.params.userId } });
@@ -250,6 +259,7 @@ router.delete('/:userId/unfollow', isLoggedIn, async (req, res, next) => { // PA
   }
 });
 
+// 유저 프로필 확인 (단순 데이터만..?)
 router.get('/:userId', async (req, res, next) => {   // GET /user
   try {
     if (req.params) {

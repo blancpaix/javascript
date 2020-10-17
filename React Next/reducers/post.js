@@ -40,30 +40,35 @@ export const initialState = {
   singlePost: null,
   imagePaths: [],
   hasMorePost: true,
-  likePostLoading: false,
-  likePostDone: false,
-  likePostError: null,
-  unlikePostLoading: false,
-  unlikePostDone: false,
-  unlikePostError: null,
   loadPostLoading: false, // state 재사용
   loadPostDone: false,
   loadPostError: null,
-  loadSinglePostLoading: false,
-  loadSinglePostDone: false,
-  loadSinglePostError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
-  uploadImagesLoading: false,
-  uploadImagesDone: false,
-  uploadImagesError: null,
+
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
+
+  loadSinglePostLoading: false,
+  loadSinglePostDone: false,
+  loadSinglePostError: null,
+ 
+
+
   retweetLoading: false,
   retweetDone: false,
   retweetError: null,
@@ -133,48 +138,35 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
 // );
 
 // 동기 action 이라 하나만 만들어도 됨 서버까지 지우려면 알아서 해보고
+// state 재사용 합니다! 한페이지에서 액션이 같이 사용되지 않을때는 상태가 공유되어도 상관없으면 state 축소 가능함
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
-export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
-export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
-export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
-
-export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
-export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
-export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
-
-// state 재사용 합니다! 한페이지에서 액션이 같이 사용되지 않을때는 상태가 공유되어도 상관없으면 state 축소 가능함
-export const LOAD_USER_POST_REQUEST = 'LOAD_USER_POST_REQUEST';
-export const LOAD_USER_POST_SUCCESS = 'LOAD_USER_POST_SUCCESS';
-export const LOAD_USER_POST_FAILURE = 'LOAD_USER_POST_FAILURE';
-
-export const LOAD_HASHTAG_POST_REQUEST = 'LOAD_HASHTAG_POST_REQUEST';
-export const LOAD_HASHTAG_POST_SUCCESS = 'LOAD_HASHTAG_POST_SUCCESS';
-export const LOAD_HASHTAG_POST_FAILURE = 'LOAD_HASHTAG_POST_FAILURE';
-
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
-
-export const LOAD_SINGLE_POST_REQUEST = 'LOAD_SINGLE_POST_REQUEST';
-export const LOAD_SINGLE_POST_SUCCESS = 'LOAD_SINGLE_POST_SUCCESS';
-export const LOAD_SINGLE_POST_FAILURE = 'LOAD_SINGLE_POST_FAILURE';
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
-
-export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
-export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
-export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
@@ -182,6 +174,18 @@ export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
+export const LOAD_SINGLE_POST_REQUEST = 'LOAD_SINGLE_POST_REQUEST';
+export const LOAD_SINGLE_POST_SUCCESS = 'LOAD_SINGLE_POST_SUCCESS';
+export const LOAD_SINGLE_POST_FAILURE = 'LOAD_SINGLE_POST_FAILURE';
+
+export const LOAD_USER_POST_REQUEST = 'LOAD_USER_POST_REQUEST';
+export const LOAD_USER_POST_SUCCESS = 'LOAD_USER_POST_SUCCESS';
+export const LOAD_USER_POST_FAILURE = 'LOAD_USER_POST_FAILURE';
+
+export const LOAD_HASHTAG_POST_REQUEST = 'LOAD_HASHTAG_POST_REQUEST';
+export const LOAD_HASHTAG_POST_SUCCESS = 'LOAD_HASHTAG_POST_SUCCESS';
+export const LOAD_HASHTAG_POST_FAILURE = 'LOAD_HASHTAG_POST_FAILURE';
 
 // 리듀서: 이전 상태를 액션을 통해 다음 상태로 만드는 함수, 단 불변성 유지 필요
 const reducer = (state = initialState, action) => produce(state, (draft) => {
@@ -310,7 +314,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case REMOVE_POST_REQUEST:
       draft.removePostLoading = true;
       draft.removePostDone = false;
-      draft.removePostDone = null;
+      draft.removePostError = null;
       break;
     case REMOVE_POST_SUCCESS:
       // 필터는 그냥 쓰시고...
