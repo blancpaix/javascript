@@ -79,9 +79,9 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] ? <PostImages images={post.Images} /> : null}
         actions={[ // 배열에 key 를 추가해줘야 함
           <RetweetOutlined key="retweet" onClick={onRetweet} />,
-          liked // 이건 뭐임? 배열안에서는 이렇게 사용이 된다고?
+          (liked // 이건 뭐임? 배열안에서는 이렇게 사용이 된다고?
             ? <HeartTwoTone key="heart" twoToneColor="#f52d00" onClick={onUnLike} />
-            : <HeartOutlined key="heart" onClick={onLike} />,
+            : <HeartOutlined key="heart" onClick={onLike} />),
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="more"

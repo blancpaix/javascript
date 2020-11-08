@@ -28,6 +28,7 @@ db.sequelize.sync()
 // fs 를 익스프레스 서버가 사용할 수 있도록 설정을 해줘야 함 __dirname 은 현재 폴더를 말함 'C:\\'+ 이렇게 안쓰고 join 씀 os 마다 경로가 다름!
 app.use('/', express.static(path.join(__dirname, 'uploads'))); // /은 외부접속시 보여지는 경로 (폴더 구조 외부 노출X)
 app.use(morgan('dev'));
+
 // cors() 모든 CORS 문제 개방 res.setHeader('Access-Control-Allow-ORigin, '*'); 이게 들어감
 app.use(cors({
   origin: 'http://localhost:3000',    // '*' 이렇게 하면 모두 허용, http://localhost:3000/
@@ -61,6 +62,7 @@ app.use('/user', userRouter);
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
 app.use('/hashtag', hashtagRouter);
+
 
 // 에러 처리 미들웨어 위치 마지막, 에러페이지 특이하게 처리하고 싶다면 이렇게 써
 // app.use((err, req, res, next) => { });

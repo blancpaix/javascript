@@ -9,8 +9,11 @@ import { CHANGE_DISPLAYNAME_REQUEST } from '../reducers/user';
 
 const DisplayNameEditForm = () => {
   const dispatch = useDispatch();
-  const { me, changeDisplayNameLoading, changeDisplayNameError } = useSelector((state) => state.user);
-  const [displayName, setDisplayName] = useInput(me?.nickname || '');
+  const {
+    me, changeDisplayNameLoading, changeDisplayNameError,
+  } = useSelector((state) => state.user);
+  const [displayName, setDisplayName] = useInput(me?.displayName || '');
+
   const onSubmit = useCallback(() => {
     dispatch({
       type: CHANGE_DISPLAYNAME_REQUEST,
@@ -27,7 +30,7 @@ const DisplayNameEditForm = () => {
           value={displayName}
           onChange={setDisplayName}
           loading={changeDisplayNameLoading}
-          onSearh={onSubmit}
+          onSearch={onSubmit}
         />
       </FormMargin>
       {changeDisplayNameError ? <div>에러가 발생했다는데요....</div> : null}

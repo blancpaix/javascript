@@ -12,4 +12,5 @@ module.exports = (sequelize, DataTypes) => {
     db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
   };
   return Hashtag;
-}
+};
+

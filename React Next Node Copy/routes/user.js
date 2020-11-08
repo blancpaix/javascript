@@ -6,6 +6,27 @@ const { isNotLogin, isLogin } = require('./passportSession');
 const { User, Post }  = require('../models');
 const router = express.Router();
 
+// SSR 로그인 데이터 처리
+router.get('/', async (req, res, next) => {
+  console.log('header : ', req.headers);
+  try {
+    if (req.user) {
+      const ssrUserInfo = await User.findOne({
+        where: { id : req.user.id },
+        attributes: {
+          exclude: ['password']
+        }
+      })
+      res.status(200).json(ssrUserInfo);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 // 회원가입 POST /user
 router.post('/', isNotLogin, async (req, res, next) => {
   console.log('req body // ', req.body);
@@ -29,11 +50,11 @@ router.post('/', isNotLogin, async (req, res, next) => {
     console.error(err);
     next(err);
   }
-})
+});
+
 // 로그인 POST /login
 // passport를 사용하는데 좀 복잡합니다...;;ㄷㄷㄷ
 router.post('/login', isNotLogin, async (req, res, next) => {
-  console.log('req.body // ', req.body);
   passport.authenticate('local', (err, user, msg) => {
     if (err) {
       console.error(err);
@@ -57,13 +78,13 @@ router.post('/login', isNotLogin, async (req, res, next) => {
           attributes: ['id']
         }]
       });
-      console.log('userInfo // ', userInfo)
       return res.status(200).json(userInfo);
     })
   })(req, res, next);   // 이건 뭐임?
 });
 // 로그아웃 POST /logout
-router.post('/logout', isLogin, (req, res) => {
+router.post('/logout', (req, res) => {
+  console.log('logout session // ', req.session);
   req.logout();
   req.session.destroy();
   return res.send('logout Success');

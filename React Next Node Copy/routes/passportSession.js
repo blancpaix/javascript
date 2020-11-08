@@ -1,4 +1,5 @@
 exports.isLogin = (req, res, next) => {
+  console.log('req // ', req);
   if (req.isAuthenticated()) {
     next();
   } else {
@@ -7,6 +8,7 @@ exports.isLogin = (req, res, next) => {
 };
 
 exports.isNotLogin = (req, res, next) => {
+  console.log('req // ', req);
   if (!req.isAuthenticated()) {
     next();
   } else {
@@ -23,4 +25,4 @@ exports.switchActivation = (req, res, next) => {
     next();
     res.status(200).send('Existing User Data');
   }
-}
+};

@@ -63,7 +63,11 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {    // 비동기 함�
     });
     // 차단은 브라우저가 하는데 허용은 서버에서 해줌
 
-    res.status(200).send('ok');   // res.send('ok')
+    // 모든 데이터 끌어모아서 유저 데이터를 넘겨줘야 하는데.. 이거는사실상 필요가 없는거고
+    // 여기서 데이터 넘겨 줘서 그대로 유저 있는거처럼 해야함 대충 user 넘겨줄게
+    const result = await User.findOne({ where: { email } });
+
+    res.status(200).send(result);   // res.send('ok')
   } catch (err) {
     console.error(err);
     next(err);  // status 500
@@ -126,7 +130,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
       nickname: req.body.nickname,
     }, {
       where: { id: req.user.id },
-    }); 
+    });
     res.status(200).json({ nickname: req.body.nickname })
   } catch (err) {
     console.error(err);

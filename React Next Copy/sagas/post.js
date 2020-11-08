@@ -1,4 +1,5 @@
 import { all, call, fork, put, takeLatest, throttle } from 'redux-saga/effects';
+import axios from 'axios';
 import {
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
@@ -38,6 +39,7 @@ function* loadPosts(action) {
     // const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
+
     });
   } catch (err) {
     console.error(err);
@@ -49,11 +51,11 @@ function* loadPosts(action) {
 }
 
 function uploadImagesAPI(data) {
-  return null;
+  return axios.post('/post/image', data);
 }
 function* uploadImages(action) {
   try {
-    // const result = yield call(uploadImagesAPI, action.data);
+    const result = yield call(uploadImagesAPI, action.data);
     yield put({
       type: UPLOAD_IMAGES_SUCCESS,
       data: result.data,
@@ -68,15 +70,22 @@ function* uploadImages(action) {
 }
 
 function addPostAPI(data) {
-  return null;
+  console.log('data // ', data);
+  return axios.post('/post', data);
 }
 function* addPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
+    console.log('action.data // ', action.data);
+    const result = yield call(addPostAPI, action.data);
+
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
     });
+    // yield put({
+    //   type: ADD_MY_POST,
+    //   data: result.data.id,
+    // });
   } catch (err) {
     console.error(err);
     yield put({

@@ -28,15 +28,16 @@ function* sample(action) {
   }
 }
 
+// SSR 처리 필요
 function loadMyInfoAPI() {
-  return null;
+  return axios.get('/user');
 }
 function* loadMyInfo(action) {
   try {
-    // const result = yield call(loadMyInfoAPI, action.data);
+    const result = yield call(loadMyInfoAPI, action.data);
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
@@ -69,7 +70,7 @@ function* signup(action) {
 }
 
 function signinAPI(data) {
-  return axios.post('/user/login', data);
+  return axios.post('/user/login', data, { withCredentials: true });
 }
 function* signin(action) {
   try {

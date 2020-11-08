@@ -1,6 +1,6 @@
 const passport = require('passport')
 , bcrypt = require('bcrypt')
-, { Strategy } = require('passport-local');
+const { Strategy } = require('passport-local');
 const { User } = require('../models');
 
 module.exports = () => {
@@ -8,8 +8,8 @@ module.exports = () => {
     // data.id? data.password 값 넣음
     usernameField: 'id',
     passwordField: 'pw',
-    session: false,
-  },
+    // session: true,
+  }, 
   async (id, pw, done) => {
     // request object is now first argument   여기서 전략을 실행하세요!
     try {

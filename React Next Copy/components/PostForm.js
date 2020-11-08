@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Input } from 'antd';
 import UseInput from '../hooks/useInput';
-import { UPLOAD_IMAGES_REQUEST } from '../reducers/post';
+import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -31,16 +31,28 @@ const PostForm = () => {
       data: imageFormData,
     });
   }, []);
-  const onRemoveImage = useCallback(() => {
+  const onRemoveImage = useCallback((index) => {
     dispatchEvent({
-      type: null,
+      type: REMOVE_IMAGE,
+      data: index,
     });
   }, []);
 
   const onSubmitForm = useCallback(() => {
-    console.log('이걸 눌럿소?');
+    console.log('text // ', text, 'imagePaths // ', imagePaths);
     if (!text || !text.trim()) alert('게시글을 쓰시오!');
-  }, []);
+
+    const formData = new FormData();
+    imagePaths.forEach((el) => {
+      formData.append('image', el);
+    });
+    formData.append('content', text);
+
+    return dispatch({
+      type: ADD_POST_REQUEST,
+      data: formData,
+    });
+  }, [text, imagePaths]);
 
   return (
     <Form
@@ -52,7 +64,7 @@ const PostForm = () => {
         value={text}
         onChange={onChangeText}
         maxLength={140}
-        placeholder="무슨일이오~!"
+        placeholder="무슨일이오??"
       />
       <div>
         <input
@@ -63,15 +75,15 @@ const PostForm = () => {
           ref={imageInput}
           onChange={onChangeImages}
         />
-        <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button style={{ float: 'right' }} type="primary" htmlType="submit">업로드</Button>
+        <Button onClick={onClickImageUpload}>IMAGE UPLOAD</Button>
+        <Button style={{ float: 'right' }} type="primary" htmlType="submit">UPLOAD</Button>
       </div>
       <div>
         {imagePaths.map((el, index) => (
-          <div>
+          <div key={el} style={{ display: 'inline-block' }}>
             {el}, {index}
-            <img src={el.src} style={{ width: 200 }} alt={el.src} />
-            <Button onClick={onRemoveImage(index)}>제거</Button>
+            <img src={`http://localhost:3000/${el}`} style={{ width: 200 }} alt={`http://localhost:3000/${el}`} />
+            <Button onClick={() => onRemoveImage(index)}>DELETE</Button>
           </div>
         ))}
       </div>
