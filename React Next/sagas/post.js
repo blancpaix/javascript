@@ -1,8 +1,5 @@
-import { all, call, delay, fork, put, takeLatest, throttle } from 'redux-saga/effects';
+import { all, call, fork, put, takeLatest, throttle } from 'redux-saga/effects';
 import axios from 'axios';
-
-// 오류 이유는 개발용으로 설치한거 불러다 써서 그럼
-import shortId from 'shortid';
 
 import {
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
@@ -11,7 +8,7 @@ import {
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
   REMOVE_POST_OF_ME,
   LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE,
-  generateDummyPost,
+  // generateDummyPost,
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE,
@@ -294,19 +291,19 @@ export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
     fork(watchAddPost),
-    
+
     fork(watchUploadImages),
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchAddComment),
-    
+
     fork(watchRetweet),
     fork(watchLoadUserPost),
     fork(watchLoadHashtagPost),
     fork(watchLoadSinglePost),
-    
-    
-    
+
+
+
   ]);
 }

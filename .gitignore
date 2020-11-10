@@ -15,3 +15,10 @@ re next/.next/
 Sheet/.next/
 *.env
 Sheet node/uploads/
+
+.serverless
+/React Next/build
+react_nodebird.pem
+node_modules
+.env
+.next 

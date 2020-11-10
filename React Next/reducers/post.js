@@ -1,6 +1,6 @@
 import produce from 'immer';
-import shortId from 'shortid';
-import faker from 'faker';
+// import shortId from 'shortid';
+// import faker from 'faker';
 
 export const initialState = {
   mainPosts: [
@@ -66,7 +66,7 @@ export const initialState = {
   loadSinglePostLoading: false,
   loadSinglePostDone: false,
   loadSinglePostError: null,
- 
+
 
 
   retweetLoading: false,
@@ -75,6 +75,7 @@ export const initialState = {
   // 재사용 가능한거는 그냥 합치세요~
 };
 
+/*
 const dummyPost = (data) => ({
   id: data.id,
   content: data.content,
@@ -94,7 +95,7 @@ const dummyComment = (data) => ({
   },
 });
 
-// 무한 스크롤    더이상 안씀
+ 무한 스크롤    더이상 안씀
 export const generateDummyPost = (number) => Array(number).fill().map(() => ({
   id: shortId.generate(),
   User: {
@@ -113,6 +114,7 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
     },
   }],
 }));
+*/
 
 // 성능 최적화 위해서는 array 수천개로 만드는거를 추천 그게 더 대단한거임
 // 하나도 끊김없이 처리되는것이 더 완성도 높은거임
@@ -361,14 +363,14 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   }
 });
 
-export const addPost = (data) => ({
-  type: ADD_POST_REQUEST,
-  data,
-});
+// export const addPost = (data) => ({
+//   type: ADD_POST_REQUEST,
+//   data,
+// });
 
-export const addComment = (data) => ({
-  type: ADD_COMMENT_REQUEST,
-  data,
-});
+// export const addComment = (data) => ({
+//   type: ADD_COMMENT_REQUEST,
+//   data,
+// });
 
 export default reducer;

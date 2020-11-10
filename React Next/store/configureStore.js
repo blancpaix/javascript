@@ -19,9 +19,6 @@ const configureStore = () => {
     : composeWithDevTools(applyMiddleware(...middlewares));
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga); // 이게 뭐임 root Reducer 처럼 설정하는거임
-  store.dispatch({
-    type: 'CHANGE_NICKNAME', data: '마구니 철퇴',
-  });
 
   return store;
 };

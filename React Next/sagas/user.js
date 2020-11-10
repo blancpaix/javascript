@@ -1,6 +1,6 @@
 // 리듀서는 합칠때 컴바인 리듀서로 했는데 이거느 그럴 필요 없어요
 
-import { all, call, delay, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import {
   LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE,
@@ -8,7 +8,7 @@ import {
   LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE,
   SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
   CHANGE_DISPLAYNAME_REQUEST, CHANGE_DISPLAYNAME_SUCCESS, CHANGE_DISPLAYNAME_FAILURE,
-  
+
   FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
   LOAD_USER_INFO_REQUEST, LOAD_USER_INFO_SUCCESS, LOAD_USER_INFO_FAILURE,

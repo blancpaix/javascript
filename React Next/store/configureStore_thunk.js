@@ -18,9 +18,6 @@ const configureStore = () => {
     ? compose(applyMiddleware(...middlewares))
     : composeWithDevTools(applyMiddleware(...middlewares))    // 개발용일때만 사용, 배열 안에는 saga, sunk 들어감   // 이거는 dev middleware 을 넣어준거임
   const store = createStore(reducer, enhancer);
-  store.dispatch({
-    type: 'CHANGE_NICKNAME', data: '마구니 철퇴'
-  });
 
   return store;
 };
