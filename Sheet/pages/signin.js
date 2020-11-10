@@ -15,7 +15,7 @@ const Signin = () => {
   const { currentSession, signinLoading, signinDone, signinError, } = useSelector(state => state.user);
 
   useEffect(() => {
-    if (currentSession && currentSession.id || signinDone) Router.replace('/');
+    if (currentSession && currentSession.id || signinDone) Router.back();
   }, [currentSession]);
 
   useEffect(() => {

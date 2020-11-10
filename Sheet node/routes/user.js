@@ -110,7 +110,6 @@ router.post('/signup', isNotSignin, async (req, res, next) => {
     await User.create({
       email, password: hashedPassword, displayName, name,
     })
-
     const result = User.findOne({
       where: { email },
       attributes: {

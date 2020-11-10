@@ -34,7 +34,7 @@ const SigninForm = () => {
         </div>
         <div>
           <Button htmlFor="submit" htmlType="submit" type="primary" loading={loading}>SIGN IN</Button>
-          <Link href="/signup"><a><Button>SIGN UP</Button></a></Link>
+          <Link href="/"><a><Button>SIGN UP</Button></a></Link>
         </div>
       </Form>
     </>

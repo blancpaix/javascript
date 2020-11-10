@@ -1,76 +1,87 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import axios from 'axios';
+import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
 import { Button, Table } from 'antd';
+import wrapper from '../store/configureStore';
 
 import AppLayout from '../components/AppLayout';
-
 import Notice from '../components/board/notice';
+import BoardLayout from '../components/board/BoardLayout';
+import BoardContent from '../components/board/BoardContent';
+
+import { FILTERING_POST, LOAD_POSTS_REQUEST } from '../reducers/board';
+
 
 const Board = () => {
+  const dispatch = useDispatch();
+  const { boardPosts, selectedPost, currentSession } = useSelector(state => state.board);
+
+  const onClickWrite = useCallback(() => {
+    if (!currentSession || !currentSession.id) return alert('로그인이 필요하오')
+    Router.push('/write');
+  }, [currentSession]);
+  const onClickItem = useCallback((index) => {
+    dispatch({
+      type: FILTERING_POST,
+      data: index,
+    });
+  }, []);
 
   const columns = [
     {
       title: '번호',
       width: 50,
-      dataIndex: 'index',
-      key: 'index',
+      dataIndex: 'id',
+      key: 'id',
       fixed: 'left',
     },
     {
       title: 'Title',
       width: 200,
       dataIndex: 'title',
-      key: 'title',
       fixed: 'left',
     },
     {
-      title: 'Writer',
-      dataIndex: 'writer',
-      key: 'writer',
+      title: 'Date',
+      dataIndex: 'createdAt',
       width: 150,
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      title: 'Writer',
+      dataIndex: 'UserId',
       width: 150,
     },
     {
       title: '-',
       dataIndex: 'sub',
-      key: 'sub',
       width: 25,
     },
   ];
 
-  const dataSource = [
-    {
-      index: 1,
-      title: '뭐임',
-      writer: 'test',
-      date: '2020-11-11',
-    },
-    {
-      index: 2,
-      title: '뭐임2',
-      writer: 'test2',
-      date: '2020-11-13',
-    },
-  ];
+  useEffect(() => {
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    })
+  }, [])
 
   return (
     <AppLayout>
       <Notice />
+      <BoardLayout />
+      {selectedPost && <BoardContent data={selectedPost} />}
       <div>여기다가 그거 렌더링 할거야 리스트</div>
-      <Table columns={columns} dataSource={dataSource} sticky
-        onRow={(record, rowIndex) => {
+      <Table columns={columns} dataSource={boardPosts} sticky
+        rowKey="id"
+        onRow={(record) => {
           return {
-            onClick: event => { console.log('rowIndex', rowIndex, record) },
+            onClick: event => { onClickItem(record.id) },
           }
         }}
       />
       <div>
-        <Button type="primary"
-        >글쓰기</Button>
+        <Button type="primary" onClick={onClickWrite}>글쓰기</Button>
       </div>
 
     </AppLayout>

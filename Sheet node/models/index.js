@@ -10,6 +10,7 @@ db.User = require('./user')(sequelize, Sequelize);
 db.FreeBoard = require('./freeBoard')(sequelize, Sequelize);
 db.NoticeBoard = require('./noticeBoard')(sequelize, Sequelize);
 db.RequestBoard = require('./requestBoard')(sequelize, Sequelize);
+db.Image = require('./image')(sequelize, Sequelize);
 db.Comment = require('./comment')(sequelize, Sequelize);
 db.Music = require('./music')(sequelize, Sequelize);
 db.Sheet = require('./sheet')(sequelize, Sequelize);

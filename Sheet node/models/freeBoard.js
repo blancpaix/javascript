@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   FreeBoard.associate = (db) => {
     db.FreeBoard.belongsTo(db.User, { foreignKey: { allowNull: false } });
     db.FreeBoard.hasMany(db.Comment);
+    db.FreeBoard.hasMany(db.Image);
   };
 
   return FreeBoard;

@@ -29,7 +29,7 @@ const AppLayout = ({ children }) => {
           <Link href="/"><a>노드버드</a></Link>
         </Menu.Item>
         <Menu.Item>
-          <Link href="/profile"><a>프로필</a></Link>
+          <Link href="/p-rofile"><a>프로필</a></Link>
         </Menu.Item>
         <Menu.Item>
           <SearchInput

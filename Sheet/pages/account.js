@@ -22,11 +22,11 @@ const Account = () => {
   }, [findAccountDone, findAccountError])
 
   const onSubmit = useCallback(() => {
-    console.log('email, name', email, name);
     dispatch({
       type: FIND_ACCOUNT_REQUEST,
       data: { email, name }
-    })
+    });
+    Router.push('/');
   }, [email, name]);
 
   return (

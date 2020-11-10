@@ -22,9 +22,25 @@ const AppLayout = ({ children }) => {
     if (logoutError) return alert(logoutError);
   }, [logoutError]);
 
+  const onClickLogo = useCallback(() => {
+    Router.push(`/`);
+  }, []);
+
   const onSearch = useCallback(() => {
     Router.push(`/search/${searchInput}`);
-  }, [searchInput])
+  }, [searchInput]);
+
+  const onClickBoard = useCallback(() => {
+    Router.push(`/board`);
+  }, []);
+
+  const onClickSignin = useCallback(() => {
+    Router.push('/signin');
+  }, []);
+
+  const onClickSignup = useCallback(() => {
+    Router.push('/signup');
+  }, []);
 
   const onLogout = useCallback(() => {
     dispatch({
@@ -35,9 +51,9 @@ const AppLayout = ({ children }) => {
   return (
     <Layout>
       <Menu mode="horizontal" style={{ alignContent: 'center', alignItems: 'stretch' }}>
-        <Link href="http://localhost:4000">
+        <Menu.Item onClick={onClickLogo}>
           <img src="https://www.google.com/logos/doodles/2015/googles-new-logo-5078286822539264.3-hp2x.gif" alt="google" style={{ maxWidth: '100px' }} />
-        </Link>
+        </Menu.Item>
         <Menu.Item>
           <Input.Search
             enterButton
@@ -69,10 +85,10 @@ const AppLayout = ({ children }) => {
              </Menu.Item>
               <Menu.Divider />
               <Menu.Item>
-                <a href="http://localhost:4000/signin"><Button type="primary">Sign-in</Button></a>
+                <Button type="primary" onClick={onClickSignin}>Sign-in</Button>
               </Menu.Item>
               <Menu.Item>
-                New Customer? <a href="http://localhost:4000/signup">Start here.</a>
+                New Customer? <a onClick={onClickSignup}>Start here.</a>
               </Menu.Item>
             </SubMenu>
           )
@@ -84,7 +100,7 @@ const AppLayout = ({ children }) => {
         <Menu.Item>
           악보
          </Menu.Item>
-        <SubMenu title="Board">
+        <SubMenu title="Board" onClick={onClickBoard}>
           <Menu.Item>
             NOTICE
           </Menu.Item>
@@ -95,6 +111,7 @@ const AppLayout = ({ children }) => {
             REQUEST
           </Menu.Item>
         </SubMenu>
+
       </Menu>
 
       <Content style={{ backgroundColor: 'yellow', minHeight: 'calc(100vh - 300px)' }}>

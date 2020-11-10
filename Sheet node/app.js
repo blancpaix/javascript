@@ -11,6 +11,7 @@ const morgan = require('morgan');
 
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const boardRouter = require('./routes/board');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/board', boardRouter);
 
 app.listen(3000, () => {
   console.log('[[ EXPRESS server on 3000 Port Runnnnnnnnning ]]')
