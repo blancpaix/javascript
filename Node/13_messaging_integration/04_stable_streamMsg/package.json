@@ -1,0 +1,16 @@
+{
+  "name": "04_stable_streammsg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ioredis": "^4.28.5",
+    "serve-handler": "^6.1.3",
+    "ws": "^8.5.0"
+  }
+}

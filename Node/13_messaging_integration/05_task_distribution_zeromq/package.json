@@ -1,0 +1,17 @@
+{
+  "name": "05_task_distribution",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "generateTask.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "delay": "^5.0.0",
+    "indexed-string-variation": "^1.0.3",
+    "zeromq": "^5.2.8"
+  }
+}
