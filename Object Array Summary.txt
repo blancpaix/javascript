@@ -1,0 +1,62 @@
+객체 병합 복사 등등
+
+Object 생성방식
+const obj = {};     // const 여도 객체는 변경 가능함
+const obj = new Object();
+obj['alpha'] = 'beta';
+obj['beta'] = 'gamma';
+function Function(c,d) { this.a : c, this.b: d};
+const obj = new Func('a', 'b');
+
+접근 방식
+let value = obj.a;
+let value = obj['alpha']
+
+객체 생성 key-value 구조로 키가 중복되면 override 됨
+
+Merge
+js => assign    // shallow 방식
+const obj1 = {a: 'alpha', b: 'beta'};
+const obj2 = {b: 'bee', c: 'cal'};
+const obj3 = Objecgt.assign(obj1, obj2);    기준이 되는 객체도 변함
+  obj1: {a: '~', b:'bee', c:'~'};
+  abj3: {a: '~', b:'bee', c:'~'};
+const obj4 = object.assign({}, obj1, obj2);   기준이 되는 객체 불변
+  obj1: {a:'~', b:'beta'};
+
+... Spread 연산자 또한 assign 이랑 같은 결과인데 원본이 바뀌지 않기를 원하면 스프레드 쓰세요 === assign({}, obj1, obj2)
+
+Copy
+const obj5 = Object.assign({}, obj1);
+  obj5 === obj1   ??는 아니고 안에 내용만 같음
+
+
+
+Array 생성 방식
+let array = [];     // 추후 변경 가능성 여부 체크
+let array = ['1', '2', '3'];    // 초기 값 할당
+let arr3 = new Array();
+  arr3[0] = 'zero';
+
+배열 리터럴 [] 사용 권장 JS 와 다르언어 다른점 => 배열 크기 동적 변경 가능, 다른 데이터 타입 기입 가능
+- 배열 크기 변경    // 할당되지 않은 공간은 undefined
+  arr.length = 5;
+- 배열 추가
+  arr.push('alpha');    // 배열 크기 6으로 증가
+- 배열 마지막 값 제거
+  arr.pop();
+- 배열 첫번째 값 제거
+  arr.shift();
+- 두개의 배열 합치기
+  arr.concat(arr2);
+- 배열 값 사이 원하는 문자 삽입   / 임의 삽입
+  arr.join('/');
+- 배열 역순 전환
+  arr.reverse();
+- 배열 정렬
+  arr.sort();
+- 배열 일부 반환
+  arr.slice(0, 2);      // [0~2] 항목 / [-2] 뒤에서 2항목
+- 배열 추가 또는 제거하여 반환
+  arr.splice(1,2);    // [1~2] 항목 잘라냄 기존 값에서 잘라 내 새 값에 붙여넣음
+  

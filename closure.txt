@@ -1,0 +1,66 @@
+Closure
+
+설명하기에 좀 긴 과정이 필요하다.
+하지만 단순하게 클로저에 대한 정의만 필요하다면 이것을 보면 좋겠다.
+Closure means that an inner function always has access to the vars and parameters of its outer function, even after the outer function has returned.
+가장 간결하게 설명한 문장이다고 생각한다. 
+
+클로저를 알기 전 필요한 것들을 먼저 집고 넘어가겠다.
+
+프로그램이 실행되면 코드가 작성된 대로 값, 변수, 함수 등을 메모리에 할당하며 생명주기(life cycle)가 결정된다.
+블록(함수)의 위치에 따라 전역변수와 지역변수가 생기며
+전역변수는 블록 외부에 선언된 변수로 프로그램 전체에서 접근 가능하고 전역 스코프를 가진다.
+지역변수는 블록 내부에 선언된 변수로 블록 내부에서만 접근 가능하고 지역 스코프를 가진다.
+
+아래와 같은 프로그램이 있다.
+
+const foo = 'global variable';
+console.log(foo);
+
+function scopeTest() { 
+  const bar = 'local variable';
+  return bar;
+}
+console.log(bar);   // Error;
+
+일반적으로 전역변수는 프로그램 실행 시점부터 종료될때까지 값을 유지하고 있고
+지역 변수는 함수에서 값을 사용할때 메모리에 할당되었다가 연산이 종료되면 메모리에서 해제된다.
+
+보통은 함수에서 반환할때 사용된 변수를 메모리에서 삭제되기때문에 외부에서 접근이 불가능하다.
+하지만 JS는 특이하게도 함수에서 반환된 변수를 계속 참조하여 사용할 수 있다. 이러한 특성이 클로저다.
+
+이러한 특성을 이용해 OOP 를 흉내내기도 가능하다.
+
+클로저로 은닉화 구현
+  prototype을 통해 객체를 다루는 방식으로 구현
+
+  일단 만들어봅시다.
+  
+  function Maker(name) {
+    this._name = namel
+
+    Maker.prototype.showName = function() {
+      console.log('this is ' + this._name);
+    }
+  };
+
+  const make1 = new Maker('일번');
+  make1.showName();
+  nake1._name = "첫번째";
+  make1.showName();
+
+  _name이 private 으로 처리되길 운했으나 외부에서 접근이 가능하다. 이걸 막자
+
+  function Maker(name) {
+    this._name = name;
+
+    return function () {
+      consoel.log('this is '+ this._name);
+    }
+  };
+
+  const make1 = Maker('일번');
+  make();
+
+  이렇게 지역변수를 외부에서 접근 할 수있다. 이를 해제하기 위해서는 명시적으로 삭제시켜줘야 한다.
+  make1 = null 으로 처리를 하자.
