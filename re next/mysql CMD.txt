@@ -1,0 +1,11 @@
+mysql CMD
+
+mysql -u root -p
+1004
+
+mysql -h 서버 -u 아이디 -p 비밀번호 데이터베이스 명
+
+
+show databases;
+
+use databse_name;
