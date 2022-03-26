@@ -22,3 +22,9 @@ react_nodebird.pem
 node_modules
 .env
 .next 
+design_pattern_bible/
+destroy/
+mobx/
+Node/11_2_bactingAndCaching/example-db/
+Node/13_messaging_integration/03_queue_msg/msgHistory/
+Node/Node.js-Design-Patterns/
