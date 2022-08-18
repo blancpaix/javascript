@@ -42,7 +42,7 @@ const server = createServer((req, res) => {
     const server = servers[route.index];
     const target = `http://${server.Address}:${server.Port}`;
     proxy.web(req, res, { target })
-  })
+  });
 });
 
 server.listen(8080, () => {
@@ -58,6 +58,7 @@ server.listen(8080, () => {
 
   또 다른 최적화로 cluster 모듈로 로드밸런서의 여러 인스턴스를 실행하고 모든 코어에 로드를 분산하는것
 
+  
 
 서버 시작하기
 // 서버 레지스트리 시작
@@ -66,10 +67,8 @@ consul agent -dev
 forever start loadBalancer.js
 
 
+
   이 패턴은 직접적이라서 좋음
   consul은 웹 ui 지원. => localhost:8500
-  모니터링도 지원....하는데 뭐 consul-checks 에서 확인하기 바람
-
-
-  
+  모니터링도 지원....하는데 뭐 consul-checks 에서 확인하기 바람  
 */

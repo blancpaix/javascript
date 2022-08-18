@@ -11,6 +11,10 @@ export default class ConsulManger {
     this.tags = [name];
   }
 
+  withCheckOptions(checkOptsObj) {
+    this.check = checkOptsObj;
+  }
+
   registerService() {
     console.log('this??', this);
     consulClient.agent.service.register({
@@ -19,16 +23,16 @@ export default class ConsulManger {
       address: this.address,
       port: this.port,
       tags: this.tags,
+      check: this.check,
     }, () => {
       console.log(`${this.name} registered successfully!`);
     })
   };
 
   unregisterService(err) {
-    err && console.error('error un unregisterService', err, this.id);
+    err && console.error('unregisterService! Occured!', err, this);
     consulClient.agent.service.deregister(this.id, () => {
       process.exit(err ? 1 : 0);
-    })
-
-  }
+    });
+  };
 }

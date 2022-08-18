@@ -4,13 +4,18 @@ import consul from 'consul';
 
 const routing = [
   {
-    path: '/api',
-    service: 'api-service',
+    path: '/auth',
+    service: 'auth-service',
     index: 0,
   },
   {
     path: '/pay',
-    service: 'payment-service',
+    service: 'pay-service',
+    index: 0,
+  },
+  {
+    path: '/etc',
+    service: 'etc-service',
     index: 0,
   },
 ];
@@ -20,6 +25,11 @@ const cache = new Map();
 
 const consulClient = consul();
 const proxy = httpProxy.createProxyServer();
+
+proxy.on('error', (err, req, res) => {
+  console.log('이거 왜이럼...');
+  res.writeHead(500).end('Something was wrong...');
+});
 
 async function removeCacheTimer(path) {
   setTimeout(() => {
@@ -50,7 +60,6 @@ const consulList = (route) => {
   })
 }
 
-
 const server = createServer(async (req, res) => {
   if (req.url === "/favicon.ico") return;
   console.log('req.url', req.url);
@@ -60,6 +69,7 @@ const server = createServer(async (req, res) => {
   });
 
   const servers = await fetchServices(route);
+
 
   route.index = (route.index + 1) % servers.length;
   const server = servers[route.index];
